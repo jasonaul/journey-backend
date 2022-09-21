@@ -1,0 +1,23 @@
+{
+  "name": "journey",
+  "version": "1.0.0",
+  "description": "Journey - Your Personal Event Calendar ",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jasonaul/journey-backend.git"
+  },
+  "author": "Jason Aul & Mickey Arnold",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jasonaul/journey-backend/issues"
+  },
+  "homepage": "https://github.com/jasonaul/journey-backend#readme",
+  "dependencies": {
+    "mongoose": "^6.6.1"
+  }
+}
