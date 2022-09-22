@@ -2,12 +2,27 @@
 const express = require('express')
 const methodOverride = require('method-override');
 require("dotenv").config()
+const cors = require('cors')
+
 
 /* == Express Instance == */
 const app = express()
 
+// whitelist & corsOptions 
+const whitelist = ['http://localhost:3000', 'deployed app site']
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
 
 /* == Middleware == */
+app.use(cors(corsOptions))
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(methodOverride('_method'))
@@ -19,7 +34,7 @@ const mongoURI = process.env.MONGODB_URI
 mongoose.connect(mongoURI)
 
 /* == Port == */
-const PORT = /* process.env.PORT || */ 3000;
+const PORT =  process.env.PORT ||  3003;
 
 /* == Models Required == */
 const Events = require("./models/events.js");
@@ -84,7 +99,7 @@ app.delete('/events/:id', (req, res) => {
 
 
 
-app.listen(/* PORT ||  */3000, () => {
-    console.log("Server is listening on 3000"/* , PORT */)
+app.listen( PORT || 3000, () => {
+    console.log("Server is listening on " + PORT )
 })
 
