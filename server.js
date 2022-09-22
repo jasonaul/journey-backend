@@ -9,24 +9,24 @@ const cors = require('cors')
 const app = express()
 
 // whitelist & corsOptions 
-const whitelist = ['http://localhost:3000', 'deployed app site']
+const whitelist = ['http://localhost:3003', 'deployed app site']
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
-}
+// const corsOptions = {
+//   origin: function (origin, callback) {
+//     if (whitelist.indexOf(origin) !== -1) {
+//       callback(null, true)
+//     } else {
+//       callback(new Error('Not allowed by CORS'))
+//     }
+//   }
+// }
 
 /* == Middleware == */
-app.use(cors(corsOptions))
+// app.use(cors(corsOptions))
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(methodOverride('_method'))
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + './public'));
 
 /* == Mongoose == */
 const mongoose = require('mongoose')
@@ -43,9 +43,11 @@ const Events = require("./models/events.js");
 //**** Routes ****//
 //*****************//
 
+
+
 /* == Home == */
 app.get('/', (req, res) => {
-    res.send("You are home.")
+    res.render('home.ejs')
 })
 
 /* == Events (index) == */
@@ -99,7 +101,7 @@ app.delete('/events/:id', (req, res) => {
 
 
 
-app.listen( PORT || 3000, () => {
+app.listen( PORT || 3003, () => {
     console.log("Server is listening on " + PORT )
 })
 
