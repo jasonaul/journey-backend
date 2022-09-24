@@ -3,6 +3,12 @@ const express = require('express')
 // const methodOverride = require('method-override');
 require("dotenv").config()
 
+// Installed and required 'body-parser' in case we need to use it to parse requests of content-type (application/json)
+// const bodyParser = require("body-parser")
+// parse requests of content-type - application/x-www-form-urlencoded
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({extended: true}))
+
 /* == Internal Modules == */
 const routes = require('./routes')
 const cors = require('cors')
