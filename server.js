@@ -1,7 +1,7 @@
 /* == External Modules == */
 const express = require('express')
 // const methodOverride = require('method-override');
-// require("dotenv").config()
+require("dotenv").config()
 
 /* == Internal Modules == */
 const routes = require('./routes')
@@ -12,7 +12,7 @@ const cors = require('cors')
 const app = express()
 
 /* == Port == */
-const PORT =  process.env.PORT ||  3003;
+const PORT =  process.env.PORT ||  3000;
 
 /* == DB connection ==*/
 require('./config/db.connection')
@@ -20,7 +20,7 @@ require('./config/db.connection')
 
 
 // whitelist & corsOptions 
-const whitelist = ['http://localhost:3000', 'https://fathomless-sierra-68956.herokuapp.com']
+const whitelist = ['http://localhost:3003', 'https://fathomless-sierra-68956.herokuapp.com']
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -34,6 +34,7 @@ const corsOptions = {
 
 /* == Middleware == */
 app.use(cors(corsOptions))
+// app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 // app.use(methodOverride('_method'))

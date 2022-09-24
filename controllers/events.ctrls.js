@@ -1,7 +1,9 @@
 const db = require('../models')
 
 const index = (req, res) => {
+  console.log("I hit the index route")
     db.Events.find({}, (error, events) => {
+      console.log(error)
       if(error) return res.status(400).json({ error: error.message });
   
       return res.status(200).json({
