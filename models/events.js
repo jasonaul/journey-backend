@@ -15,14 +15,14 @@ const eventsSchema = new mongoose.Schema({
         required: true
     },
     date: {
-        type: Date, 
+        type: String, 
         required: true
     },
     time: {
-        type: Number
+        type: String
     },
     price: {
-        type: Number
+        type: String
     },
     link: {
         type: String

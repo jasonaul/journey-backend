@@ -26,7 +26,7 @@ require('./config/db.connection')
 
 
 // whitelist & corsOptions 
-const whitelist = ['http://localhost:3003', 'https://fathomless-sierra-68956.herokuapp.com']
+const whitelist = ['http://localhost:3003', 'http://localhost:3000']
 
 const corsOptions = {
   origin: function (origin, callback) {
