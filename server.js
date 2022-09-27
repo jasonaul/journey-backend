@@ -12,6 +12,7 @@ require("dotenv").config()
 /* == Internal Modules == */
 const routes = require('./routes')
 const cors = require('cors')
+const { db } = require('./models/Events')
 
 
 /* == Express Instance == */
@@ -55,6 +56,11 @@ app.use(express.urlencoded({extended: true}))
 //**** Routes ****//
 //*****************//
 app.use('/events', routes.events)
+
+// app.post('/events', (req, res) => {
+//   console.log(req.body);
+//   db.events()
+// })
 
 
 // /* == Home == */
