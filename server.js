@@ -26,17 +26,23 @@ require('./config/db.connection')
 
 
 //whitelist & corsOptions 
-const whitelist = ['http://localhost:3003', 'http://localhost:3000']
+const whitelist = ['http://localhost:3003', 'http://localhost:3000',`${process.env.FRONTEND_URL}`]
+
 
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
-}
+	origin: (origin, callback) => {
+		console.log(whitelist, "WHITELIST")
+		console.log(origin, "ORIGIN")
+		if (whitelist.indexOf(origin) !== -1 || !origin) {
+			callback(null, true);
+		} else {
+			callback(new Error('Not allowed by CORS'));
+		}
+	},
+	// This is needed for accept credentials from the front-end
+	// not needed if you are not implementing authentication
+	credentials: true,
+};
 
 /* == Middleware == */
 // app.use(cors(corsOptions))
