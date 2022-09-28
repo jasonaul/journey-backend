@@ -25,7 +25,7 @@ require('./config/db.connection')
 
 
 
-// whitelist & corsOptions 
+whitelist & corsOptions 
 const whitelist = ['http://localhost:3003', 'http://localhost:3000','https://git.heroku.com/journey-1.git']
 
 const corsOptions = {
