@@ -12,7 +12,6 @@ require("dotenv").config()
 /* == Internal Modules == */
 const routes = require('./routes')
 const cors = require('cors')
-const { db } = require('./models/Events')
 
 
 /* == Express Instance == */
@@ -27,7 +26,7 @@ require('./config/db.connection')
 
 
 // whitelist & corsOptions 
-const whitelist = ['http://localhost:3003', 'http://localhost:3000']
+const whitelist = ['http://localhost:3003', 'http://localhost:3000','https://git.heroku.com/journey-1.git']
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -56,66 +55,6 @@ app.use(express.urlencoded({extended: true}))
 //**** Routes ****//
 //*****************//
 app.use('/events', routes.events)
-
-// app.post('/events', (req, res) => {
-//   console.log(req.body);
-//   db.events()
-// })
-
-
-// /* == Home == */
-// app.get('/', (req, res) => {
-//     res.send('Events home')
-// })
-
-// /* == Events (index) == */
-// app.get('/events', (req, res) => {
-//     res.send("Events route is working")
-// })
-
-// /* == Add New Event (new) == */
-// app.get('/events/new', (req, res) => {
-//     res.send("New routes is working")
-// })
-
-// BELOW: Save for later in development
-
-// app.post('/events', (req, res) => {
-//     Events.create(req.body, (err, createdEvent) => {
-//         if (error) {
-//             console.log('error', err);
-//             res.send(err);
-//         } else {
-//             res.redirect('/events')
-//         }
-//     })
-// })
-
-
-// /* == Show Event (show) == */
-// app.get('/events/:id', async (req, res) => {
-//     res.send('ID route working')
-// })
-
-
-// /* == Edit Event (edit) == */
-// app.get('/events/:id/edit', (req, res) => {
-//     res.send('Edit route working')
-//     //BELOW: Save for further in development
-//     // Events.findById(req.params.id, (err, foundEvent) =>{
-//     //     res.render('/edit.ejs', {event: foundEvent})
-//     // })
-// })
-
-
-// /* == Delete and Destroy and Event (delete) == */
-// app.delete('/events/:id', (req, res) => {
-//     Events.findByIdAndRemove(req.params.id, (err, data) => {
-//         if(err) console.log(err)
-//         res.redirect('/events')
-//     })
-// })
-
 
 
 
