@@ -12,13 +12,17 @@ require("dotenv").config()
 /* == Internal Modules == */
 const routes = require('./routes')
 const cors = require('cors')
+const passport = require('passport')
+const cookieSession = require('cookie-session')
+const passportSetup = require('./passport')
+const authRoute = require('./routes/auth')
 
 
 /* == Express Instance == */
 const app = express()
 
 /* == Port == */
-const PORT =  process.env.PORT ||  3000;
+const PORT =  process.env.PORT ||  8080;
 
 /* == DB connection ==*/
 require('./config/db.connection')
@@ -26,7 +30,7 @@ require('./config/db.connection')
 
 
 //whitelist & corsOptions 
-const whitelist = ['http://localhost:3003', 'http://localhost:3000',`${process.env.FRONTEND_URL}`]
+const whitelist = ['http://localhost:3003', 'http://localhost:3000','http://localhost:8080',`${process.env.CLIENT_URL}`]
 
 
 const corsOptions = {
@@ -39,16 +43,29 @@ const corsOptions = {
 			callback(new Error('Not allowed by CORS'));
 		}
 	},
+	methods:'GET,POST,PUT,DELETE',
 	// This is needed for accept credentials from the front-end
 	// not needed if you are not implementing authentication
 	credentials: true,
 };
 
 /* == Middleware == */
+app.use(
+	cookieSession({
+		name:'session',
+		keys:['cyberwolve'],
+		maxAge:24*60*60*100,
+
+
+	})
+)
+app.use(passport.initialize())
+app.use(passport.session())
 // app.use(cors(corsOptions))
 app.use(cors('*'))
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+
 // app.use(methodOverride('_method'))
 // app.use(express.static(__dirname + './public'));
 
@@ -61,6 +78,7 @@ app.use(express.urlencoded({extended: true}))
 //**** Routes ****//
 //*****************//
 app.use('/events', routes.events)
+app.use('/auth',authRoute)
 
 
 
