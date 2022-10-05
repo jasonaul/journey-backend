@@ -5,7 +5,7 @@ passport.use(
   new GoogleStrategy(
     {
       clientID:process.env.CLIENT_ID,
-      clientSecret:process.env.CLIENT_SERCET,
+      clientSecret:process.env.CLIENT_SECRET,
       callbackURL:'/auth/google/callback',
       scope:['profile','email'],
 
