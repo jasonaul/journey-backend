@@ -1,3 +1,4 @@
 module.exports = {
-  events: require("./events.routes.js")
+  events: require("./events.routes.js"),
+  users: require("./auth")
 }

@@ -53,7 +53,7 @@ const corsOptions = {
 app.use(
 	cookieSession({
 		name:'session',
-		keys:['cyberwolve'],
+		keys:['journey'],
 		maxAge:24*60*60*100,
 
 
@@ -79,7 +79,7 @@ app.use(express.urlencoded({extended: true}))
 //**** Routes ****//
 //*****************//
 app.use('/events', routes.events)
-app.use('/auth',authRoute)
+app.use('/auth', routes.users)
 
 
 
