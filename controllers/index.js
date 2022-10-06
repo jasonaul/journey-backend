@@ -1,3 +1,4 @@
 module.exports = {
-  events: require('./events.ctrls.js')
+  events: require('./events.ctrls.js'),
+  users: require('./users.ctrls')
 }
