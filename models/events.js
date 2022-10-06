@@ -30,6 +30,9 @@ const eventsSchema = new mongoose.Schema({
     comments: {
         type: String
     },
+    image: {
+        type: String
+    },
     occurred: {
         type: Boolean
     }
