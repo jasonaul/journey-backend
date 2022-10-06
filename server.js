@@ -3,11 +3,7 @@ const express = require('express')
 // const methodOverride = require('method-override');
 require("dotenv").config()
 
-// Installed and required 'body-parser' in case we need to use it to parse requests of content-type (application/json)
-// const bodyParser = require("body-parser")
-// parse requests of content-type - application/x-www-form-urlencoded
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({extended: true}))
+
 
 /* == Internal Modules == */
 const routes = require('./routes')
@@ -63,6 +59,25 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(cors(corsOptions))
 // app.use(cors('*'))
+
+app.set('trust proxy', 1) // trust first proxy
+
+app.use(
+	session({
+		secret: process.env.CLIENT_SECRET,
+		resave: false,
+		saveUninitialized: false,
+		store: new MongoDBStore({
+	    uri: process.env.MONGODB_URI,
+	    collection: 'mySessions'
+	  }),
+	  cookie: {
+	    sameSite: 'none',
+	    secure: true
+	  }
+	})
+);
+
 app.use(express.json())
 
 app.use(express.urlencoded({extended: true}))
@@ -79,7 +94,7 @@ app.use(express.urlencoded({extended: true}))
 //**** Routes ****//
 //*****************//
 app.use('/events', routes.events)
-app.use('/auth', routes.users)
+app.use('/auth', authRoute)
 
 
 
