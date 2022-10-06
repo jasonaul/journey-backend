@@ -1,21 +1,11 @@
+require('dotenv').config();
 /* == External Modules == */
 const express = require('express')
-// const methodOverride = require('method-override');
-require("dotenv").config()
-
-// Installed and required 'body-parser' in case we need to use it to parse requests of content-type (application/json)
-// const bodyParser = require("body-parser")
-// parse requests of content-type - application/x-www-form-urlencoded
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({extended: true}))
 
 /* == Internal Modules == */
 const routes = require('./routes')
 const cors = require('cors')
-const passport = require('passport')
-const cookieSession = require('cookie-session')
-const passportSetup = require('./passport')
-const authRoute = require('./routes/auth')
+const session = require('express-session');
 
 
 /* == Express Instance == */
@@ -27,7 +17,8 @@ const PORT =  process.env.PORT ||  8080;
 /* == DB connection ==*/
 require('./config/db.connection')
 
-
+//  MongoDBStore for sessions
+const MongoDBStore = require('connect-mongodb-session')(session)
 
 //whitelist & corsOptions 
 const whitelist = ['http://localhost:3003', 'http://localhost:3000','http://localhost:8080',`${process.env.CLIENT_URL}`]
@@ -43,13 +34,11 @@ const corsOptions = {
 			callback(new Error('Not allowed by CORS'));
 		}
 	},
-	methods:'GET,POST,PUT,DELETE',
-	// This is needed for accept credentials from the front-end
-	// not needed if you are not implementing authentication
 	credentials: true,
 };
 
 /* == Middleware == */
+<<<<<<< HEAD
 app.use(
 	cookieSession({
 		name:'session',
@@ -64,22 +53,51 @@ app.use(passport.session())
 // app.use(cors(corsOptions))
 app.use(cors('*'))
 app.use(express.json())
+=======
+app.use(cors(corsOptions))
+// app.use(cors('*'))
+
+app.set('trust proxy', 1) // trust first proxy
+
+app.use(
+	session({
+		secret: process.env.CLIENT_SECRET,
+		resave: false,
+		saveUninitialized: false,
+		store: new MongoDBStore({
+	    uri: process.env.MONGODB_URI,
+	    collection: 'mySessions'
+	  }),
+	  cookie: {
+	    sameSite: 'none',
+	    secure: true
+	  }
+	})
+);
+
+const isAuthenticated = (req, res, next) => {
+	if (req.session.currentUser) {
+		return next();
+	} else {
+		res.status(403).json({ msg: 'login required' });
+	}
+}
+>>>>>>> normsignin
 
 app.use(express.urlencoded({extended: true}))
+app.use(express.json())
 
 // app.use(methodOverride('_method'))
 // app.use(express.static(__dirname + './public'));
 
 
 
-/* == Models Required == */
-// const Events = require("./models/events.js");
 
 //*****************//
 //**** Routes ****//
 //*****************//
-app.use('/events', routes.events)
-app.use('/auth', routes.users)
+app.use('/events', isAuthenticated, routes.events)
+app.use('/users', routes.users)
 
 
 
