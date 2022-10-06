@@ -38,24 +38,8 @@ const corsOptions = {
 };
 
 /* == Middleware == */
-<<<<<<< HEAD
-app.use(
-	cookieSession({
-		name:'session',
-		keys:['journey'],
-		maxAge:24*60*60*100,
-
-
-	})
-)
-app.use(passport.initialize())
-app.use(passport.session())
 // app.use(cors(corsOptions))
 app.use(cors('*'))
-app.use(express.json())
-=======
-app.use(cors(corsOptions))
-// app.use(cors('*'))
 
 app.set('trust proxy', 1) // trust first proxy
 
@@ -82,7 +66,6 @@ const isAuthenticated = (req, res, next) => {
 		res.status(403).json({ msg: 'login required' });
 	}
 }
->>>>>>> normsignin
 
 app.use(express.urlencoded({extended: true}))
 app.use(express.json())
