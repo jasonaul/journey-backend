@@ -79,7 +79,9 @@ app.use(express.json())
 //*****************//
 //**** Routes ****//
 //*****************//
-app.use('/events', isAuthenticated, routes.events)
+app.use('/events', routes.events)
+
+// app.use('/events', isAuthenticated, routes.events)
 app.use('/users', routes.users)
 
 
