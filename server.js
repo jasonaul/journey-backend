@@ -1,17 +1,11 @@
+require('dotenv').config();
 /* == External Modules == */
 const express = require('express')
-// const methodOverride = require('method-override');
-require("dotenv").config()
-
-
 
 /* == Internal Modules == */
 const routes = require('./routes')
 const cors = require('cors')
-const passport = require('passport')
-const cookieSession = require('cookie-session')
-const passportSetup = require('./passport')
-const authRoute = require('./routes/auth')
+const session = require('express-session');
 
 
 /* == Express Instance == */
@@ -23,7 +17,8 @@ const PORT =  process.env.PORT ||  8080;
 /* == DB connection ==*/
 require('./config/db.connection')
 
-
+//  MongoDBStore for sessions
+const MongoDBStore = require('connect-mongodb-session')(session)
 
 //whitelist & corsOptions 
 const whitelist = ['http://localhost:3003', 'http://localhost:3000','http://localhost:8080',`${process.env.CLIENT_URL}`]
@@ -39,24 +34,10 @@ const corsOptions = {
 			callback(new Error('Not allowed by CORS'));
 		}
 	},
-	methods:'GET,POST,PUT,DELETE',
-	// This is needed for accept credentials from the front-end
-	// not needed if you are not implementing authentication
 	credentials: true,
 };
 
 /* == Middleware == */
-app.use(
-	cookieSession({
-		name:'session',
-		keys:['journey'],
-		maxAge:24*60*60*100,
-
-
-	})
-)
-app.use(passport.initialize())
-app.use(passport.session())
 app.use(cors(corsOptions))
 // app.use(cors('*'))
 
@@ -78,23 +59,28 @@ app.use(
 	})
 );
 
-app.use(express.json())
+const isAuthenticated = (req, res, next) => {
+	if (req.session.currentUser) {
+		return next();
+	} else {
+		res.status(403).json({ msg: 'login required' });
+	}
+}
 
 app.use(express.urlencoded({extended: true}))
+app.use(express.json())
 
 // app.use(methodOverride('_method'))
 // app.use(express.static(__dirname + './public'));
 
 
 
-/* == Models Required == */
-// const Events = require("./models/events.js");
 
 //*****************//
 //**** Routes ****//
 //*****************//
-app.use('/events', routes.events)
-app.use('/auth', authRoute)
+app.use('/events', isAuthenticated, routes.events)
+app.use('/users', routes.users)
 
 
 
